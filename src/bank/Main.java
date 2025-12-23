@@ -4,9 +4,10 @@ public final class Main {
     /**
      * Private constructor to prevent instantiation of utility class.
      */
-    Main() {
+    private Main() {
         throw new UnsupportedOperationException("Utility class");
     }
+
     /**
      * Main method to demonstrate the SavingsAccount functionality.
      *

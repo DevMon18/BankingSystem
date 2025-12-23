@@ -1,17 +1,18 @@
-package bank;
 
+package bank;
 /**
  * AbstractBankAccount provides shared logic for bank account implementations.
  */
 public abstract class AbstractBankAccount implements BankAccount {
-/**
- * The current balance of the account.
- */
+    /**
+     * The current balance of the account.
+     */
     private double balance;
     /**
      * Indicates whether the account is frozen.
      */
     private boolean frozen;
+
     /**
      * Constructor initializes balance to 0 and frozen status to false.
      */
@@ -19,6 +20,7 @@ public abstract class AbstractBankAccount implements BankAccount {
         this.balance = 0;
         this.frozen = false;
     }
+
     /**
      * Deposits an amount into the account if valid and account is not frozen.
      * @param amount The amount to deposit
@@ -36,6 +38,7 @@ public abstract class AbstractBankAccount implements BankAccount {
         balance += amount;
         System.out.printf("\t[] Deposited: \tPhp %.0f.%n", amount);
     }
+
     /**
      * Withdraws an amount from the account if valid and sufficient funds exist.
      * @param amount The amount to withdraw
@@ -58,8 +61,10 @@ public abstract class AbstractBankAccount implements BankAccount {
         balance -= amount;
         System.out.printf("\t[] Withdrawn: \tPhp %.0f.%n", amount);
     }
+
     /**
      * Returns the current balance.
+     *
      * @return The current balance
      */
     @Override
@@ -67,6 +72,7 @@ public abstract class AbstractBankAccount implements BankAccount {
         System.out.printf("\t[] Balance: \tPhp %.0f.%n", balance);
         return balance;
     }
+
     /**
      * Checks if the account is frozen.
      * @return true if frozen, false otherwise
@@ -75,6 +81,7 @@ public abstract class AbstractBankAccount implements BankAccount {
     public boolean isFrozen() {
         return frozen;
     }
+
     /**
      * Freezes the account, preventing deposits and withdrawals.
      */
@@ -82,6 +89,7 @@ public abstract class AbstractBankAccount implements BankAccount {
         frozen = true;
         System.out.println("\t- Account has been frozen.");
     }
+
     /**
      * Unfreezes the account, allowing deposits and withdrawals.
      */
