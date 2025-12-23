@@ -1,5 +1,5 @@
-
 package bank;
+
 /**
  * AbstractBankAccount provides shared logic for bank account implementations.
  */
@@ -98,4 +98,3 @@ public abstract class AbstractBankAccount implements BankAccount {
         System.out.println("\t- Account has been unfrozen.");
     }
 }
-

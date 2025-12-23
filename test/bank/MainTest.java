@@ -8,14 +8,17 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+
 class MainTest {
     @BeforeAll
     static void setUpBeforeClass() {
         System.out.println("========== Starting Bank Account Tests ==========");
     }
+
     @AfterEach
     void tearDown() {
-        System.out.println("--------------------------------------------------");
+        System.out
+                .println("--------------------------------------------------");
     }
 
     @Test
@@ -227,20 +230,25 @@ class MainTest {
     // Test case for throw new UnsupportedOperationException in Main constructor
     @Test
     @DisplayName("Test Case #14: Main Class Instantiation Test")
-    void testMainClassInstantiation_ShouldThrowUnsupportedOperationException() throws Exception {
-        System.out.println("\nTest Case #14: Executing Main Class Instantiation Test");
-        
+    void testMainClassInstantiation_ShouldThrowUnsupportedOperationException()
+            throws Exception {
+        System.out.println(
+                "\nTest Case #14: Executing Main Class Instantiation Test");
+
         // Use reflection to access private constructor
         Constructor<Main> constructor = Main.class.getDeclaredConstructor();
         constructor.setAccessible(true);
-        
+
         // Attempt to instantiate and expect exception
-        Exception exception = assertThrows(InvocationTargetException.class, () -> {
-            constructor.newInstance();
-        });
-        
-        // Verify the cause is UnsupportedOperationException with correct message
+        Exception exception = assertThrows(InvocationTargetException.class,
+                () -> {
+                    constructor.newInstance();
+                });
+
+        // Verify the cause is UnsupportedOperationException with correct
+        // message
         assertEquals("Utility class", exception.getCause().getMessage());
-        assertTrue(exception.getCause() instanceof UnsupportedOperationException);
+        assertTrue(
+                exception.getCause() instanceof UnsupportedOperationException);
     }
 }
