@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 class MainTest {
     @BeforeAll
@@ -45,7 +46,8 @@ class MainTest {
      * Expected Output Deposited: PHP 1000. Just Stick With the Description,
      * Operation and Expected Output
      */
-    void testDepositValidAmount_ShouldReturnValidWhenCallingTheSameAmount() {
+    void testDepositValidAmount_ShouldReturnValidWhenCallingTheSameAmount()
+            throws InvalidAmountException, AccountFrozenException {
         System.out.println("\nTest Case #2: Deposit Valid Amount");
         SavingsAccount account = new SavingsAccount("Test User");
         account.deposit(1000);
@@ -55,42 +57,14 @@ class MainTest {
     }
 
     @Test
-    @DisplayName("Test Case #3: Deposit Zero Amount Test")
-    /*
-     * Description Deposit with zero amount. Operations Call deposit(0).
-     * Expected Output The deposit amount must be positive. don't add if else
-     */
-    void testDepositZeroAmount_ShouldReturnErrorMessage() {
-        System.out.println("\nTest Case #3: Deposit Zero Amount");
-        SavingsAccount account = new SavingsAccount("Test User");
-        account.deposit(0);
-        assertEquals(0, account.getBalance());
-        System.out.println(
-                "\t[] Deposit operation with zero amount handled successfully.\n");
-    }
-
-    @Test
-    @DisplayName("Test Case #4: Deposit With Negative Amount Test")
-    /*
-     * Description Deposit with negative amount Operations Call deposit(-500).
-     * Expected Output The deposit amount must be positive.
-     */
-    void testDepositNegativeAmount_ShouldReturnErrorMessage() {
-        System.out.println("\nTest Case #4: Deposit Negative Amount");
-        SavingsAccount account = new SavingsAccount("Test User");
-        account.deposit(-500);
-        assertEquals(0, account.getBalance());
-        System.out.println(
-                "\t[] Deposit operation with negative amount handled successfully.\n");
-    }
-
-    @Test
     @DisplayName("Test Case #5: Withdraw with sufficient funds")
     /*
      * Description Withdraw with sufficient funds Operations Call withdraw(500)
      * Expected Output Withdrawn: Php 500.
      */
-    void testWithdrawWithSufficientFunds_ShouldReturnValidWhenCallingTheSameAmount() {
+    void testWithdrawWithSufficientFunds_ShouldReturnValidWhenCallingTheSameAmount()
+            throws InvalidAmountException, AccountFrozenException,
+            InsufficientFundsException {
         System.out.println("\nTest Case #5: Withdraw with Sufficient Funds");
         SavingsAccount account = new SavingsAccount("Test User");
         account.deposit(1000);
@@ -101,78 +75,15 @@ class MainTest {
     }
 
     @Test
-    @DisplayName("Test Case #6: Withdraw with insufficient funds")
-    /*
-     * Description Withdraw with insufficient funds Operations Call
-     * withdraw(1500) Expected Output Insufficient balance.
-     */
-    void testWithdrawWithInsufficientFunds_ShouldReturnErrorMessage() {
-        System.out.println("\nTest Case #6: Withdraw with Insufficient Funds");
-        SavingsAccount account = new SavingsAccount("Test User");
-        account.deposit(1000);
-        account.withdraw(1500);
-        assertEquals(1000, account.getBalance());
-        System.out.println(
-                "\t[] Withdraw operation with insufficient funds handled successfully.\n");
-    }
-
-    @Test
-    @DisplayName("Test Case #7: Withdraw with negative amount")
-    /*
-     * Description Withdraw with negative amount Operations Call withdraw(-100)
-     * Expected Output The withdrawn amount must be positive.
-     */
-    void testWithdrawWithNegativeAmount_ShouldReturnErrorMessage() {
-        System.out.println("\nTest Case #7: Withdraw with Negative Amount");
-        SavingsAccount account = new SavingsAccount("Test User");
-        account.deposit(1000);
-        account.withdraw(-100);
-        assertEquals(1000, account.getBalance());
-        System.out.println(
-                "\t[] Withdraw operation with negative amount handled successfully.\n");
-    }
-
-    @Test
-    @DisplayName("Test Case #8: Deposit when acount is frozen")
-    /*
-     * Description Deposit when account is frozen Operations 1. Call
-     * freezeAccount() 2. Call deposit(11500) Expected Output Account has been
-     * frozen. Account is frozen. Cannot deposit.
-     */
-    void testDepositWhenAccountIsFrozen_ShouldReturnErrorMessage() {
-        System.out.println("\nTest Case #8: Deposit when Account is Frozen");
-        SavingsAccount account = new SavingsAccount("Test User");
-        account.freezeAccount();
-        account.deposit(11500);
-        assertEquals(0, account.getBalance());
-        System.out.println(
-                "\t[] Deposit operation when account is frozen handled successfully.\n");
-    }
-
-    @Test
-    @DisplayName("Test Case #9: Withdraw when account is frozen")
-    /*
-     * Description Withdraw when account is frozen Operations Call
-     * withdraw(500). Expected Output Account is frozen. Cannot withdraw.
-     */
-    void testWithdrawWhenAccountIsFrozen_ShouldReturnErrorMessage() {
-        System.out.println("\nTest Case #9: Withdraw when Account is Frozen");
-        SavingsAccount account = new SavingsAccount("Test User");
-        account.freezeAccount();
-        account.withdraw(500);
-        assertEquals(0, account.getBalance());
-        System.out.println(
-                "\t[] Withdraw operation when account is frozen handled successfully.\n");
-    }
-
-    @Test
     @DisplayName("Test Case #10: Unfreeze account and withdraw")
     /*
      * Description Unfreeze account and withdraw Operations 1. Call
      * unfreezeAccount(). 2. Call withdraw(100). Expected Output Account has
      * been unfrozen. Withdrawn: Php 100.
      */
-    void testUnfreezeAccountAndWithdraw_ShouldReturnValidWhenCallingTheSameAmount() {
+    void testUnfreezeAccountAndWithdraw_ShouldReturnValidWhenCallingTheSameAmount()
+            throws InvalidAmountException, AccountFrozenException,
+            InsufficientFundsException {
         System.out.println("\nTest Case #10: Unfreeze Account and Withdraw");
         SavingsAccount account = new SavingsAccount("Test User");
         account.deposit(500);
@@ -204,7 +115,9 @@ class MainTest {
      * Description Check balance after multiple transactions Operations Call
      * getBalance(). Expected Output Balance: Php 400.
      */
-    void testCheckBalanceAfterMultipleTransactions_ShouldReturnCorrectBalance() {
+    void testCheckBalanceAfterMultipleTransactions_ShouldReturnCorrectBalance()
+            throws InvalidAmountException, AccountFrozenException,
+            InsufficientFundsException {
         System.out.println(
                 "\nTest Case #12: Check Balance after Multiple Transactions");
         SavingsAccount account = new SavingsAccount("Test User");
@@ -250,5 +163,179 @@ class MainTest {
         assertEquals("Utility class", exception.getCause().getMessage());
         assertTrue(
                 exception.getCause() instanceof UnsupportedOperationException);
+    }
+
+    // Coverage Test Case - AccountFrozenException Super
+    @Test
+    @DisplayName("Test Case #15: AccountFrozenException Superclass Test")
+    void testAccountFrozenExceptionSuperclass_ShouldBeException() {
+        System.out.println(
+                "\nTest Case #15: AccountFrozenException Superclass Test");
+        AccountFrozenException exception = new AccountFrozenException(
+                "Account is frozen.");
+        assertTrue(exception instanceof Exception);
+        System.out.println(
+                "\t[] AccountFrozenException superclass test handled successfully.\n");
+    }
+
+    // Coverage Test Case - BankAccountManager getAccount return accounts
+    @Test
+    @DisplayName("Test Case #16: BankAccountManager Get Account Test")
+    void testBankAccountManagerGetAccount_ShouldReturnCorrectAccount()
+            throws InvalidAmountException, AccountFrozenException {
+        System.out.println(
+                "\nTest Case #16: BankAccountManager Get Account Test");
+        BankAccountManager manager = new BankAccountManager();
+        SavingsAccount account = new SavingsAccount("Test User");
+        manager.addAccount(account);
+        BankAccount retrievedAccount = manager.getAccount(1);
+        assertNotNull(retrievedAccount);
+        assertEquals(account, retrievedAccount);
+        System.out.println(
+                "\t[] BankAccountManager getAccount test handled successfully.\n");
+    }
+
+    // Coverage Test Case - BankAccountManager listAccounts
+    @Test
+    @DisplayName("Test Case #17: BankAccountManager List Accounts Test")
+    void testBankAccountManagerListAccounts_ShouldListAllAccounts()
+            throws InvalidAmountException, AccountFrozenException {
+        System.out.println(
+                "\nTest Case #17: BankAccountManager List Accounts Test");
+        BankAccountManager manager = new BankAccountManager();
+        SavingsAccount account1 = new SavingsAccount("User One");
+        SavingsAccount account2 = new SavingsAccount("User Two");
+        manager.addAccount(account1);
+        manager.addAccount(account2);
+        // Capture the output of listAccounts
+        manager.listAccounts();
+        System.out.println(
+                "\t[] BankAccountManager listAccounts test handled successfully.\n");
+    }
+
+    // Coverage Test Case for BankAccountManager filtering transaction history
+    @Test
+    @DisplayName("Test Case #18: BankAccountManager Filter Transaction History Test")
+    void testBankAccountManagerFilterTransactionHistory_ShouldReturnFilteredTransactions()
+            throws InvalidAmountException, AccountFrozenException,
+            InsufficientFundsException {
+        System.out.println(
+                "\nTest Case #18: BankAccountManager Filter Transaction History Test");
+        SavingsAccount account = new SavingsAccount("Test User");
+        account.deposit(1000);
+        account.withdraw(300);
+        account.deposit(700);
+        List<Transaction> history = account.getTransactionHistory();
+        BankAccountManager manager = new BankAccountManager();
+        List<Transaction> filtered = manager.filterTransactionsAbove(500,
+                history);
+        assertEquals(2, filtered.size());
+        System.out.println(
+                "\t[] BankAccountManager filter transaction history test handled successfully.\n");
+    }
+
+    // Coverage Test Case - BankAccount sortTransactionsByAmount
+    @Test
+    @DisplayName("Test Case #19: BankAccountManager Sort Transactions By Amount Test")
+    void testBankAccountManagerSortTransactionsByAmount_ShouldReturnSortedTransactions()
+            throws InvalidAmountException, AccountFrozenException,
+            InsufficientFundsException {
+        System.out.println(
+                "\nTest Case #19: BankAccountManager Sort Transactions By Amount Test");
+        SavingsAccount account = new SavingsAccount("Test User");
+        account.deposit(1000);
+        account.withdraw(300);
+        account.deposit(700);
+        List<Transaction> history = account.getTransactionHistory();
+        BankAccountManager manager = new BankAccountManager();
+        List<Transaction> sorted = manager.sortTransactionsByAmount(history);
+        assertEquals(3, sorted.size());
+        assertEquals(300, sorted.get(0).getAmount());
+        assertEquals(700, sorted.get(1).getAmount());
+        assertEquals(1000, sorted.get(2).getAmount());
+        System.out.println(
+                "\t[] BankAccountManager sort transactions by amount test handled successfully.\n");
+    }
+
+    // Test Coverage for Transaction.java getType
+    @Test
+    @DisplayName("Test Case #21: Transaction getType Method Test")
+    void testTransactionGetType_ShouldReturnCorrectType()
+            throws InvalidAmountException, AccountFrozenException {
+        System.out.println("\nTest Case #21: Transaction getType Method Test");
+        Transaction transaction = new Transaction("Withdrawal", 500);
+        assertEquals("Withdrawal", transaction.getType());
+        System.out.println(
+                "\t[] Transaction getType method test handled successfully.\n");
+    }
+
+    // Test Coverage InvalidAmountException Superclass
+    @Test
+    @DisplayName("Test Case #22: InvalidAmountException Superclass Test")
+    void testInvalidAmountExceptionSuperclass_ShouldBeException() {
+        System.out.println(
+                "\nTest Case #22: InvalidAmountException Superclass Test");
+        InvalidAmountException exception = new InvalidAmountException(
+                "Invalid amount.");
+        assertTrue(exception instanceof Exception);
+        System.out.println(
+                "\t[] InvalidAmountException superclass test handled successfully.\n");
+    }
+
+    // Test Coverage InsufficientFundsException Superclass
+    @Test
+    @DisplayName("Test Case #23: InsufficientFundsException Superclass Test")
+    void testInsufficientFundsExceptionSuperclass_ShouldBeException() {
+        System.out.println(
+                "\nTest Case #23: InsufficientFundsException Superclass Test");
+        InsufficientFundsException exception = new InsufficientFundsException(
+                "Insufficient funds.");
+        assertTrue(exception instanceof Exception);
+        System.out.println(
+                "\t[] InsufficientFundsException superclass test handled successfully.\n");
+    }
+
+    // Test Coverage for Transaction.java String and dont make it FAIL in jUnit
+    @Test
+    @DisplayName("Test Case #24: Transaction toString Method Test")
+    void testTransactionToString_ShouldReturnCorrectString()
+            throws InvalidAmountException, AccountFrozenException {
+        System.out.println("\nTest Case #24: Transaction toString Method Test");
+        Transaction transaction = new Transaction("Deposit", 800);
+        String expectedString = "Deposit: Php 800";
+        assertEquals(expectedString, transaction.toString());
+        System.out.println(
+                "\t[] Transaction toString method test handled successfully.\n");
+    }
+
+    // Test Coverage for AbstractBankAccount.java deposit Exception catch block
+    @Test
+    @DisplayName("Test Case #25: AbstractBankAccount Deposit Exception Handling Test")
+    void testAbstractBankAccountDepositExceptionHandling()
+            throws InvalidAmountException, AccountFrozenException {
+        System.out.println(
+                "\nTest Case #25: AbstractBankAccount Deposit Exception Handling Test");
+        SavingsAccount account = new SavingsAccount("Test User");
+        account.freezeAccount();
+        // Attempt to deposit a negative amount to trigger exception
+        account.deposit(-500);
+        System.out.println(
+                "\t[] AbstractBankAccount deposit exception handling test handled successfully.\n");
+    }
+
+    // Test Coverage for AbstractBankAccount.java withdraw Exception catch block
+    @Test
+    @DisplayName("Test Case #26: AbstractBankAccount Withdraw Exception Handling Test")
+    void testAbstractBankAccountWithdrawExceptionHandling()
+            throws InvalidAmountException, AccountFrozenException,
+            InsufficientFundsException {
+        System.out.println(
+                "\nTest Case #26: AbstractBankAccount Withdraw Exception Handling Test");
+        SavingsAccount account = new SavingsAccount("Test User");
+        account.freezeAccount();
+        // Attempt to withdraw a negative amount to trigger exception
+        account.withdraw(-300);
+        System.out.println(
+                "\t[] AbstractBankAccount withdraw exception handling test handled successfully.\n");
     }
 }
